@@ -1,4 +1,4 @@
-package com.github.superz97.tracker.service;
+package com.github.superz97.tracker.service.impl;
 
 import com.github.superz97.tracker.entity.User;
 import com.github.superz97.tracker.repository.UserRepository;
