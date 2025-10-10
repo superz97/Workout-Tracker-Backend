@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "workout_plans")
@@ -72,4 +73,26 @@ public class WorkoutPlan {
     @Builder.Default
     private List<WorkoutLog> logs = new ArrayList<>();
 
+    public void addExercise(WorkoutExercise workoutExercise) {
+        exercises.add(workoutExercise);
+        workoutExercise.setWorkoutPlan(this);
+    }
+
+    public void removeExercise(WorkoutExercise workoutExercise) {
+        exercises.remove(workoutExercise);
+        workoutExercise.setWorkoutPlan(null);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        WorkoutPlan other = (WorkoutPlan) obj;
+        return Objects.equals(id, other.id);
+    }
 }
