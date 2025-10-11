@@ -7,14 +7,20 @@ import com.github.superz97.tracker.dto.response.JwtResponse;
 import com.github.superz97.tracker.dto.response.UserResponse;
 import com.github.superz97.tracker.entity.User;
 import com.github.superz97.tracker.exception.BadRequestException;
+import com.github.superz97.tracker.exception.UnauthorizedException;
 import com.github.superz97.tracker.mapper.UserMapper;
 import com.github.superz97.tracker.repository.UserRepository;
 import com.github.superz97.tracker.security.JwtTokenProvider;
 import com.github.superz97.tracker.service.AuthService;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,11 +63,50 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse login(LoginRequest loginRequest) {
-        return null;
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsernameOrEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String accessToken = jwtTokenProvider.generateToken(authentication);
+            String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
+            log.info("User logged in successfully: {}", userDetails.getUsername());
+            return JwtResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .tokenType("Bearer")
+                    .expiresIn(jwtExpiration)
+                    .build();
+        } catch (Exception ex) {
+            log.error("Login failed for user: {}", loginRequest.getUsernameOrEmail());
+            throw new UnauthorizedException("Invalid username/email or password");
+        }
     }
 
     @Override
     public JwtResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        return null;
+        String refreshToken = refreshTokenRequest.getRefreshToken();
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new UnauthorizedException("Invalid or expired refresh token");
+        }
+        String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UnauthorizedException("User not found"));
+        if (!user.getIsActive()) {
+            throw new UnauthorizedException("User account is deactivated");
+        }
+        String newAccessToken = jwtTokenProvider.generateToken(user);
+        String newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
+        log.info("Token refreshed for user: {}", username);
+        return JwtResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .tokenType("Bearer")
+                .expiresIn(jwtExpiration)
+                .build();
     }
 }
