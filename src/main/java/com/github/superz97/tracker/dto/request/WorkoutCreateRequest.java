@@ -22,6 +22,8 @@ public class WorkoutCreateRequest {
     @Size(max = 100)
     private String name;
 
+    private String description;
+
     private LocalDate scheduledDate;
 
     private LocalTime scheduledTime;
