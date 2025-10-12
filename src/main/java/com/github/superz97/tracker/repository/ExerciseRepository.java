@@ -18,12 +18,16 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     List<Exercise> findByCategory(ExerciseCategory category);
     List<Exercise> findByMuscleGroup(MuscleGroup muscleGroup);
 
+//    @Query("""
+//    SELECT e FROM Exercise e WHERE (:category IS NULL OR e.category = :category)
+//    AND (:muscleGroup IS NULL OR e.muscleGroup = :muscleGroup)
+//    AND (:searchTerm IS NULL OR LOWER(e.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+//""")
     @Query("""
-    SELECT e FROM Exercise e WHERE 
-    (:category IS NULL OR e.category = :category) AND
-    (:muscleGroup IS NULL OR e.muscleGroup = :muscleGroup) AND 
-    (:searchTerm IS NULL OR LOWER(e.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
-""")
+        SELECT e FROM Exercise e WHERE (:category IS NULL OR e.category = :category)
+        AND (:muscleGroup IS NULL OR e.muscleGroup = :muscleGroup)
+        AND (:searchTerm IS NULL OR LOWER(e.name) LIKE :searchTerm)
+    """)
     Page<Exercise> findWithFilters(
             @Param("category") ExerciseCategory category,
             @Param("muscleGroup") MuscleGroup muscleGroup,

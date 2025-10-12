@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
                     .expiresIn(jwtExpiration)
                     .build();
         } catch (Exception ex) {
-            log.error("Login failed for user: {}", loginRequest.getUsernameOrEmail());
+            log.error("Login failed for user: {}", loginRequest.getUsernameOrEmail(), ex);
             throw new UnauthorizedException("Invalid username/email or password");
         }
     }

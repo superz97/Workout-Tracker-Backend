@@ -38,7 +38,12 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     @Transactional(readOnly = true)
     public Page<ExerciseResponse> getAllExercises(ExerciseCategory category, MuscleGroup muscleGroup, String searchTerm, Pageable pageable) {
-        Page<Exercise> exercises = exerciseRepository.findWithFilters(category, muscleGroup, searchTerm, pageable);
+        String preparedSearchTerm = null;
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            preparedSearchTerm = "%" + searchTerm + "%";
+        }
+        // Page<Exercise> exercises = exerciseRepository.findWithFilters(category, muscleGroup, searchTerm, pageable);
+        Page<Exercise> exercises = exerciseRepository.findWithFilters(category, muscleGroup, preparedSearchTerm, pageable);
         return exercises.map(exerciseMapper::toExerciseResponse);
     }
 
