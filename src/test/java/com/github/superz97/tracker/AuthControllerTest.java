@@ -44,13 +44,13 @@ public class AuthControllerTest {
         signupRequest = SignupRequest.builder()
                 .username("testuser")
                 .email("test@example.com")
-                .password("Test123!@#")
+                .password("TestPass123!")
                 .firstName("Test")
                 .lastName("User")
                 .build();
         loginRequest = LoginRequest.builder()
                 .usernameOrEmail("testuser")
-                .password("Test123!@#")
+                .password("TestPass123!")
                 .build();
         userResponse = UserResponse.builder()
                 .id(1L)

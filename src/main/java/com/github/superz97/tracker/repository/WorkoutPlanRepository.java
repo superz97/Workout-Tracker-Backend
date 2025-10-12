@@ -21,7 +21,7 @@ public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlan, Long> 
     List<WorkoutPlan> findByUserIdAndStatus(Long userId, WorkoutStatus status);
 
     @Query("""
-    SELECT w FROM WorkoutPlan w WHERE w.user.id = :userId 
+    SELECT w FROM WorkoutPlan w WHERE w.user.id = :userId
     AND (:status IS NULL OR w.status = :status)
     AND (:startDate IS NULL OR w.scheduledDate >= :startDate)
     AND (:endDate IS NULL OR w.scheduledDate <= :endDate)
