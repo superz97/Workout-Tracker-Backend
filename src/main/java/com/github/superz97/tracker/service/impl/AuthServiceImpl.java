@@ -12,7 +12,6 @@ import com.github.superz97.tracker.mapper.UserMapper;
 import com.github.superz97.tracker.repository.UserRepository;
 import com.github.superz97.tracker.security.JwtTokenProvider;
 import com.github.superz97.tracker.service.AuthService;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
