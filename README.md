@@ -37,7 +37,7 @@ A comprehensive RESTful API for tracking workouts and fitness progress, built wi
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/workout-tracker.git
+git clone https://github.com/superz97/Workout-Tracker.git
 cd workout-tracker
 ```
 
