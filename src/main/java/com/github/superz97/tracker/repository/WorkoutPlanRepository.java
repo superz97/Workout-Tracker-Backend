@@ -20,14 +20,20 @@ public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlan, Long> 
     Optional<WorkoutPlan> findByIdAndUserId(Long id, Long userId);
     List<WorkoutPlan> findByUserIdAndStatus(Long userId, WorkoutStatus status);
 
+//    @Query("""
+//    SELECT w FROM WorkoutPlan w WHERE w.user.id = :userId
+//    AND (:status IS NULL OR w.status = :status)
+//    AND (:startDate IS NULL OR w.scheduledDate >= :startDate)
+//    AND (:endDate IS NULL OR w.scheduledDate <= :endDate)
+//""")
     @Query("""
     SELECT w FROM WorkoutPlan w WHERE w.user.id = :userId
     AND (:status IS NULL OR w.status = :status)
-    AND (:startDate IS NULL OR w.scheduledDate >= :startDate)
-    AND (:endDate IS NULL OR w.scheduledDate <= :endDate)
-""")
+    AND (w.scheduledDate >= COALESCE(:startDate, w.scheduledDate))
+    AND (w.scheduledDate <= COALESCE(:endDate, w.scheduledDate))
+    """)
     Page<WorkoutPlan> findByUserIdWithFilters(
-            @Param("usedId") Long userId,
+            @Param("userId") Long userId,
             @Param("status") WorkoutStatus status,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
