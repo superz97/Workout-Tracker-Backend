@@ -11,7 +11,7 @@ A comprehensive RESTful API for tracking workouts and fitness progress, built wi
 - **Progress Tracking**: Track workout completion and exercise progress
 - **Reporting**: Generate weekly and monthly workout reports
 - **API Documentation**: Interactive Swagger UI for API exploration
-- **Postman Collection**: Postman collection is included to testing if you prefer it over Swagger
+- **Postman Collection**: Postman collection is included for testing if you prefer it over Swagger
 
 ## Technology Stack
 
