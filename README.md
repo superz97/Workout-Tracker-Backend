@@ -1,6 +1,6 @@
 # Workout Tracker API
 
-A comprehensive RESTful API for tracking workouts and fitness progress, built with Spring Boot and PostgreSQL.
+A RESTful API for tracking workouts and fitness progress, built with Spring Boot and PostgreSQL.
 
 ## Features
 
@@ -10,24 +10,20 @@ A comprehensive RESTful API for tracking workouts and fitness progress, built wi
 - **Workout Planning**: Create, schedule, and manage workout plans
 - **Progress Tracking**: Track workout completion and exercise progress
 - **Reporting**: Generate weekly and monthly workout reports
-- **API Documentation**: Interactive Swagger UI for API exploration
-- **Postman Collection**: Postman collection is included for testing if you prefer it over Swagger
+- **Postman Collection**: Included Postman collection for testing
 
-## Technology Stack
+## Tech Stack
 
 - **Backend**: Spring Boot 3.5.x
 - **Database**: PostgreSQL 16
 - **Security**: Spring Security 6.x with JWT
 - **ORM**: Spring Data JPA with Hibernate
 - **Migrations**: Flyway
-- **Documentation**: OpenAPI 3.0 (Swagger)
-- **Testing**: Postman Collection
-- **Build Tool**: Gradle
 - **Containerization**: Docker & Docker Compose
 
 ## Prerequisites
 
-- Java 21 or higher
+- Java 17 or higher
 - Docker and Docker Compose
 - Gradle 8.x (optional, wrapper included)
 
@@ -41,8 +37,7 @@ git clone https://github.com/superz97/Workout-Tracker.git
 cd workout-tracker
 ```
 
-2. Setup environment variables:
-The minimum is to set up JWT_SECRET
+2. Setup environment variables
 
 3. Start the application:
 ```bash
@@ -81,11 +76,3 @@ Application configuration can be customized through:
 - Refresh tokens expire after 24 hours (configurable)
 - CORS is configured for local development
 - All endpoints except auth are protected
-
-## License
-
-This project is licensed under the Apache 2.0 License.
-
-## Support
-
-For issues and questions, please create an issue in the GitHub repository.
